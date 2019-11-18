@@ -1,0 +1,11 @@
+E:\Python_1\meta\meta\bin\Debug\meta.exe.config
+E:\Python_1\meta\meta\bin\Debug\meta.exe
+E:\Python_1\meta\meta\bin\Debug\meta.pdb
+E:\Python_1\meta\meta\bin\Debug\ThermoFisher.CommonCore.BackgroundSubtraction.dll
+E:\Python_1\meta\meta\bin\Debug\ThermoFisher.CommonCore.Data.dll
+E:\Python_1\meta\meta\bin\Debug\ThermoFisher.CommonCore.MassPrecisionEstimator.dll
+E:\Python_1\meta\meta\bin\Debug\ThermoFisher.CommonCore.RawFileReader.dll
+E:\Python_1\meta\meta\obj\Debug\meta.csproj.CoreCompileInputs.cache
+E:\Python_1\meta\meta\obj\Debug\meta.csproj.CopyComplete
+E:\Python_1\meta\meta\obj\Debug\meta.exe
+E:\Python_1\meta\meta\obj\Debug\meta.pdb

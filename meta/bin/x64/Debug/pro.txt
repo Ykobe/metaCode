@@ -1,0 +1,146 @@
+using System;
+using ThermoFisher.CommonCore.RawFileReader;
+using ThermoFisher.CommonCore.Data.Business;
+using ThermoFisher.CommonCore.Data.Interfaces;
+using System.IO;
+using System.Text;
+using System.Collections;
+
+namespace meta
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            const String filename = @"E:\Python_1\meta\meta\obj\Debug\21_Val.RAW";
+            //const String filename = "E:/wamp/www/tp5/application/index/controller/21_Val.RAW";
+            //string filename = args[0];
+            //showheaderInfo(filename);
+
+            //string resFilePath = args[0];
+            //string rawFile = args[1];
+            //string paraIndex = args[2];
+            //string headerInfo = Encoding.UTF8.GetString(Encoding.Default.GetBytes(""));
+            //for (int i = 3; i < args.Length; i ++)
+            //{
+            //    headerInfo += Encoding.UTF8.GetString(Encoding.Default.GetBytes(args[i]));
+            //}
+            //getentityData(resFilePath, rawFile, headerInfo, paraIndex);
+
+            getTuneInfo(filename);
+        }
+
+        public static void getentityData(string resFilePath, string rawFile, string headerInfo, string paraIndex)
+        {
+            IRawDataPlus plus = RawFileReaderAdapter.FileFactory(rawFile);
+            plus.SelectInstrument(Device.MS, 1);
+
+            ArrayList indexOfpara = new ArrayList();
+            string[] selectIndex = paraIndex.Split(',');
+
+            foreach (string ele in selectIndex)
+            {
+                int index = Int32.Parse(ele);
+                indexOfpara.Add(index);
+            }
+
+            //string fileName = DateTime.Now.ToLocalTime().ToString().Replace("/", "").Replace(":", "").Replace(" ", "_") + ".csv";
+            FileStream stream = new FileStream(resFilePath, FileMode.Create, FileAccess.Write);
+            StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
+
+            headerInfo = "RT," + headerInfo;
+            headerInfo = "#," + headerInfo;
+            writer.WriteLine(headerInfo);
+
+            int offset = 0;
+            int maxoffset = plus.GetStatusLogEntriesCount();
+            while (offset < maxoffset)
+            {
+                string temp = "";
+                IStatusLogEntry statusLogEntry = plus.GetStatusLogEntry(offset);
+                temp += offset.ToString() + ",";
+                temp += statusLogEntry.Time.ToString() + ",";
+
+                foreach (int ele in indexOfpara)
+                {
+                    temp += Convert.ToString(statusLogEntry.Values[ele]) + ",";
+                }
+
+                writer.WriteLine(temp.Substring(0, temp.Length - 1));
+                offset += 1;
+            }
+
+            writer.Close();
+        }
+
+        public static void showheaderInfo(string filePath)
+        {
+            IRawDataPlus plus = RawFileReaderAdapter.FileFactory(filePath);
+            plus.SelectInstrument(Device.MS, 1);
+            HeaderItem[] statuslogheaderinformation = plus.GetStatusLogHeaderInformation();
+            int index = 0;
+
+            //string fileName = DateTime.Now.ToLocalTime().ToString().Replace("/", "").Replace(":", "").Replace(" ", "_") + ".txt";
+            //FileStream stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+            //StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
+
+            Console.OutputEncoding = Encoding.UTF8;
+
+            while (index < statuslogheaderinformation.Length)
+            {
+                //Console.WriteLine(Encoding.UTF8.GetString(Encoding.Default.GetBytes(statuslogheaderinformation[index].Label)));
+                Console.WriteLine(statuslogheaderinformation[index].Label);
+                //headerInfo[index] = statuslogheaderinformation[index].Label;
+                //writer.WriteLine(statuslogheaderinformation[index].Label);
+                index += 1;
+            }
+            //writer.Close();
+
+            //while (true)
+            //{
+            //    if (index >= statuslogheaderinformation.Length)
+            //    {
+            //        //Console.WriteLine(plus.RunHeaderEx.FirstSpectrum.ToString());
+            //        //Console.WriteLine(plus.RunHeaderEx.LastSpectrum.ToString());
+            //        //Console.WriteLine(plus.RunHeaderEx.StartTime.ToString("F2"));
+            //        //Console.WriteLine(plus.RunHeaderEx.EndTime.ToString("F2"));
+            //        //Console.WriteLine(plus.RunHeaderEx.LowMass.ToString());
+            //        //Console.WriteLine(plus.RunHeaderEx.HighMass.ToString());
+            //        break;
+            //    }
+            //    Console.WriteLine(statuslogheaderinformation[index].Label);
+            //    writer.WriteLine(statuslogheaderinformation[index].Label);
+            //    index++;
+            //}
+
+            //writer.Close();
+
+        }
+        public static void getTuneInfo(string filePath)
+        {
+            IRawDataPlus plus = RawFileReaderAdapter.FileFactory(filePath);
+            plus.SelectInstrument(Device.MS, 1);
+            string fileName = DateTime.Now.ToLocalTime().ToString().Replace("/", "").Replace(":", "").Replace(" ", "_") + ".txt";
+            FileStream stream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+            StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
+            writer.WriteLine("*********************InstrumentMethod(0)***************************");
+            writer.WriteLine(plus.GetInstrumentMethod(0));
+
+            writer.WriteLine("*********************InstrumentMethod(1)****************************");
+            writer.WriteLine(plus.GetInstrumentMethod(1));
+
+            HeaderItem[] tuneDataHeaderInfo = plus.GetTuneDataHeaderInformation();
+
+            writer.WriteLine("*********************Tune DATA ****************************");
+            int tuneCnt = plus.GetTuneDataCount();
+
+            for (int i = 0; i < tuneDataHeaderInfo.Length; ++i)
+            {
+                writer.WriteLine(tuneDataHeaderInfo[i].Label);
+            }
+            writer.Close();
+        }
+
+    }
+
+}
