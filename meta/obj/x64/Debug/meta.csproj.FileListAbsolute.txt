@@ -9,3 +9,4 @@ E:\Python_1\meta\meta\obj\x64\Debug\meta.csproj.CoreCompileInputs.cache
 E:\Python_1\meta\meta\obj\x64\Debug\meta.csproj.CopyComplete
 E:\Python_1\meta\meta\obj\x64\Debug\meta.exe
 E:\Python_1\meta\meta\obj\x64\Debug\meta.pdb
+E:\Python_1\meta\meta\obj\x64\Debug\meta.csprojAssemblyReference.cache

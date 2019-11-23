@@ -22,6 +22,7 @@
 #[Oo]bj/
 [Ll]og/
 .vs/
+dataset/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -46,6 +47,8 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
+*.raw
+*.csv
 *_i.c
 *_p.c
 *_i.h
